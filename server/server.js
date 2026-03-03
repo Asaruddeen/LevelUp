@@ -18,7 +18,7 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://your-frontend-domain.com' // Add your frontend URL here when deployed
+    'https://levelup.dropzoship.com' // Add your frontend URL here when deployed
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
