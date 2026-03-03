@@ -1,3 +1,4 @@
+// server.js - Update CORS configuration
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -12,8 +13,18 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Updated CORS configuration
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://your-frontend-domain.com' // Add your frontend URL here when deployed
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // MongoDB Connection
@@ -43,7 +54,7 @@ app.get('/health', (req, res) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     mongodb: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
-    mongodbState: mongoose.connection.readyState // 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+    mongodbState: mongoose.connection.readyState
   });
 });
 
@@ -54,7 +65,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/reminders', reminderRoutes);
 app.use('/api/users', userRoutes);
 
-// 404 handler for undefined routes
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -84,7 +95,6 @@ app.listen(PORT, () => {
   console.log(`🔍 Health: http://localhost:${PORT}/health`);
 });
 
-// Handle unhandled promise rejections
 process.on('unhandledRejection', (err) => {
   console.log('❌ UNHANDLED REJECTION! Shutting down...');
   console.log(err.name, err.message);
