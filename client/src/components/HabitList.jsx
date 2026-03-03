@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import toast from 'react-hot-toast';
 
 const HabitList = ({ habits = [], setHabits, onUpdate }) => {
@@ -19,18 +19,27 @@ const HabitList = ({ habits = [], setHabits, onUpdate }) => {
     }
 
     try {
-      const response = await axios.post('/api/habits', newHabit);
+      const response = await api.post('/habits', newHabit);
       setHabits([...habitsList, response.data]);
       setNewHabit({ title: '', xpReward: 15, timeLock: 'none' });
       toast.success('Habit added!');
     } catch (error) {
-      toast.error('Failed to add habit');
+      console.error('Add habit error:', error);
+      if (error.response) {
+        // server responded with a status outside 2xx
+        toast.error(error.response.data?.message || `Failed to add habit (${error.response.status})`);
+      } else if (error.request) {
+        // no response received
+        toast.error('Network error: could not reach server');
+      } else {
+        toast.error(error.message || 'Failed to add habit');
+      }
     }
   };
 
   const handleCompleteHabit = async (habit) => {
     try {
-      const response = await axios.put(`/api/habits/${habit._id}/complete`);
+      const response = await api.put(`/habits/${habit._id}/complete`);
       
       setHabits(habitsList.map(h => 
         h._id === habit._id ? response.data.habit : h
@@ -45,7 +54,7 @@ const HabitList = ({ habits = [], setHabits, onUpdate }) => {
 
   const handleDeleteHabit = async (id) => {
     try {
-      await axios.delete(`/api/habits/${id}`);
+      await api.delete(`/habits/${id}`);
       setHabits(habitsList.filter(h => h._id !== id));
       toast.success('Habit deleted');
     } catch (error) {

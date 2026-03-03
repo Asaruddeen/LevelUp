@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import toast from 'react-hot-toast';
 import { format } from 'date-fns';
 
@@ -16,18 +16,25 @@ const ReminderList = ({ reminders, setReminders }) => {
     }
 
     try {
-      const response = await axios.post('/api/reminders', newReminder);
+      const response = await api.post('/reminders', newReminder);
       setReminders([...reminders, response.data]);
       setNewReminder({ title: '', datetime: '' });
       toast.success('Reminder set!');
     } catch (error) {
-      toast.error('Failed to add reminder');
+      console.error('Add reminder error:', error);
+      if (error.response) {
+        toast.error(error.response.data?.message || `Failed to add reminder (${error.response.status})`);
+      } else if (error.request) {
+        toast.error('Network error: could not reach server');
+      } else {
+        toast.error(error.message || 'Failed to add reminder');
+      }
     }
   };
 
   const handleDeleteReminder = async (id) => {
     try {
-      await axios.delete(`/api/reminders/${id}`);
+      await api.delete(`/reminders/${id}`);
       setReminders(reminders.filter(r => r._id !== id));
       toast.success('Reminder deleted');
     } catch (error) {
@@ -37,7 +44,7 @@ const ReminderList = ({ reminders, setReminders }) => {
 
   const handleToggleComplete = async (reminder) => {
     try {
-      const response = await axios.put(`/api/reminders/${reminder._id}/complete`);
+      const response = await api.put(`/reminders/${reminder._id}/complete`);
       setReminders(reminders.map(r => 
         r._id === reminder._id ? response.data : r
       ));

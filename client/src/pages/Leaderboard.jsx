@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const Leaderboard = () => {
@@ -14,7 +14,7 @@ const Leaderboard = () => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await axios.get('/api/users/leaderboard');
+      const response = await api.get('/users/leaderboard');
       setUsers(response.data);
     } catch (error) {
       console.error('Failed to fetch leaderboard');

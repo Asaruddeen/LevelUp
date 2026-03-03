@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import toast from 'react-hot-toast';
 import { format, isPast } from 'date-fns';
 
@@ -18,18 +18,25 @@ const TaskList = ({ tasks, setTasks, onUpdate }) => {
     }
 
     try {
-      const response = await axios.post('/api/tasks', newTask);
+      const response = await api.post('/tasks', newTask);
       setTasks([...tasks, response.data]);
       setNewTask({ title: '', deadline: '', xpReward: 20, penalty: 10 });
       toast.success('Task added!');
     } catch (error) {
-      toast.error('Failed to add task');
+      console.error('Add task error:', error);
+      if (error.response) {
+        toast.error(error.response.data?.message || `Failed to add task (${error.response.status})`);
+      } else if (error.request) {
+        toast.error('Network error: could not reach server');
+      } else {
+        toast.error(error.message || 'Failed to add task');
+      }
     }
   };
 
   const handleCompleteTask = async (task) => {
     try {
-      const response = await axios.put(`/api/tasks/${task._id}/complete`);
+      const response = await api.put(`/tasks/${task._id}/complete`);
       
       setTasks(tasks.map(t => 
         t._id === task._id ? response.data.task : t
@@ -44,7 +51,7 @@ const TaskList = ({ tasks, setTasks, onUpdate }) => {
 
   const handleDeleteTask = async (id) => {
     try {
-      await axios.delete(`/api/tasks/${id}`);
+      await api.delete(`/tasks/${id}`);
       setTasks(tasks.filter(t => t._id !== id));
       toast.success('Task deleted');
     } catch (error) {
