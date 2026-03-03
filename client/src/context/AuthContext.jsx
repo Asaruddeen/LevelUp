@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   // Set default axios config
-  axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  axios.defaults.baseURL = import.meta.env.VITE_API_URL || 'https://levelup-g28b.onrender.com/api';
   // add a sensible timeout so requests don't hang indefinitely
   axios.defaults.timeout = 10000; // 10 seconds
   
