@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    @apply bg-[#0a0a12] text-gray-200;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-[rgba(15,15,25,0.85)] backdrop-blur-md border border-purple-600/30 shadow-[0_0_25px_rgba(100,50,200,0.3)];
+  }
+  
+  .glass-card {
+    @apply rounded-2xl p-4 glass;
+  }
+  
+  .stat-card {
+    @apply bg-black/35 border border-purple-800/40 rounded-xl p-2;
+  }
+  
+  .btn-primary {
+    @apply bg-purple-900 hover:bg-purple-700 px-4 py-2 rounded-lg border border-purple-400 transition-all duration-200 text-white font-semibold;
+  }
+  
+  .btn-secondary {
+    @apply bg-blue-900 hover:bg-blue-700 px-4 py-2 rounded-lg border border-blue-400 transition-all duration-200 text-white font-semibold;
+  }
+  
+  .btn-danger {
+    @apply bg-red-900/70 hover:bg-red-800 px-3 py-1 rounded border border-red-500 transition-all duration-200;
+  }
+  
+  .input-field {
+    @apply bg-black/70 border border-purple-700/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-white;
+  }
+  
+  .scroll-custom::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .scroll-custom::-webkit-scrollbar-track {
+    @apply bg-[#1e1a2a];
+  }
+  
+  .scroll-custom::-webkit-scrollbar-thumb {
+    @apply bg-purple-600 rounded-full;
+  }
+}

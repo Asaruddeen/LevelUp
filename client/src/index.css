@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #0a0a12;
+    color: #e5e7eb;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(15, 15, 25, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 25px rgba(100, 50, 200, 0.3);
+  }
+  
+  .glass-card {
+    @apply rounded-2xl p-4;
+    background: rgba(15, 15, 25, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 25px rgba(100, 50, 200, 0.3);
+  }
+  
+  .stat-card {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid #3b2a5a;
+    @apply rounded-xl p-2;
+  }
+  
+  .btn-primary {
+    @apply bg-purple-900 hover:bg-purple-700 px-4 py-2 rounded-lg border border-purple-400 transition-all duration-200 text-white font-semibold;
+  }
+  
+  .btn-secondary {
+    @apply bg-blue-900 hover:bg-blue-700 px-4 py-2 rounded-lg border border-blue-400 transition-all duration-200 text-white font-semibold;
+  }
+  
+  .btn-danger {
+    @apply bg-red-900/70 hover:bg-red-800 px-3 py-1 rounded border border-red-500 transition-all duration-200;
+  }
+  
+  .input-field {
+    @apply bg-black/70 border border-purple-700/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500 text-white;
+  }
+  
+  .scroll-custom::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .scroll-custom::-webkit-scrollbar-track {
+    background: #1e1a2a;
+  }
+  
+  .scroll-custom::-webkit-scrollbar-thumb {
+    background: #a855f7;
+    border-radius: 10px;
+  }
+}
